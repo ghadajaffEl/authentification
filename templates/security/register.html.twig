@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .form-control:focus {
+            box-shadow: none!important;
+
+        }
+        .btn:focus {
+            outline: none !important;
+
+        }
+        .error{
+            color: red;
+        }
+
+        .valid {
+            color: green;
+        }
+        input[type="email"].error,input[type="number"].error,  input[type="text"].error{
+            border:1px solid red;
+        }
+        input[type="text"].valid,input[type="number"].valid,  input[type="email"].valid{
+            border: 1px solid green;
+        }
+    </style>
+
+
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-6">
+                {{ form_start(form,{'attr':{ 'id': 'Submit' }}) }}
+                {{ form_widget(form) }}
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.js"></script>
+    <script>
+    $(function () {
+        $("#Submit").validate(
+        {
+            onkeyup: function (element) {
+                $(element).valid();
+            },
+            rules: {
+                "user[firstName]":{
+                    "required":true,
+                     "minlength":3
+                },
+                "user[email]":{
+                  "email":true
+                },
+                "user[password][first]":{
+                    "required":true,
+                    "minlength":6
+                },
+                "user[password][second]":{
+                    "equalTo":"#user_password_first"
+                }
+
+            },
+            messages:{
+                "user[firstName]":{
+                    "minlength":"firstName must have at least 3 characters"
+                },
+                "user[email]": {
+                    "email": "entrez un email valid"
+                },
+                "user[password][second]":{
+                    "equalTo":"Enter the same password"
+                }
+
+            }
+        })
+    })
+    </script>
+    <script>
+        jQuery.extend(jQuery.validator.messages, {
+            required: "Ce champ est requis."
+        });
+
+    </script>
+{% endblock %}

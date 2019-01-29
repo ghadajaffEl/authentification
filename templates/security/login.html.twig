@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login!{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href={{ asset('css/login.css') }}>
+{% endblock %}
+{% block body %}
+    {% for flashMessage in app.session.flashbag.get('error') %}
+        <div class="alert alert-danger">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="alert alert-success">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+
+    <form class="form-signin"  method="post">
+        {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+        <h1 class="h3 mb-3 font-weight-normal">Login</h1>
+
+        <label for="inputEmail" >Email address</label>
+        <input type="text" id="inputEmail" name="email" value="{{ last_username }}" class="form-control" placeholder="Email address" required autofocus />
+        <label  for="inputPassword" >Password:</label>
+        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required />
+        <input type="hidden" name="_csrf_token"
+               value="{{ csrf_token('authenticate') }}"
+        >
+        {#
+            If you want to control the URL the user
+            is redirected to on success (more details below)
+            <input type="hidden" name="_target_path" value="/account" />
+        #}
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" value="remember-me" name="_remember_me"> Remember me
+            </label>
+        </div>
+        <button  class="btn btn-lg btn-primary btn-block" type="submit">login</button>
+    </form>
+{% endblock %}
